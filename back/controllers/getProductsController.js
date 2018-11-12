@@ -12,6 +12,19 @@ exports.getAllProducts = (req, res) => {
     })
 };
 
+exports.filterByCategory = (req, res) => {
+    let categoryId = req.params.cat.split('-');
+    let query = 'SELECT * FROM group_products JOIN products ON group_products.product_id = products.id WHERE group_id IN(' + categoryId.join() + ')'
+
+    db.query(query, function(error, result,field) {
+        if(error) {
+            res.status(500).json(error)
+        } else {
+            res.status(200).json(result)
+        }
+    })
+};
+
 exports.getAllCategories = (req, res) => {
     let sql = `CALL GetAllCateg`;
     db.query(sql, function(error, results, fields) {
